@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Para el mejor papá ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --fondo: #0d0910;
+  --rosa: #ff8eaf;
+  --rojo: #e83d70;
+  --blanco: #fff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--fondo);
+  color: var(--blanco);
+  font-family: "Press Start 2P", monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px 15px;
+}
+
+/* FONDO DE ESTRELLAS */
+#estrellas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.pantalla {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 28px;
+}
+
+.oculto { display: none !important; }
+
+h1 {
+  font-size: clamp(13px, 4vw, 19px);
+  line-height: 2;
+  font-weight: normal;
+}
+
+button {
+  font-family: inherit;
+  color: white;
+  background: var(--rojo);
+  border: none;
+  padding: 17px 22px;
+  font-size: 11px;
+  cursor: pointer;
+  box-shadow: 0 5px #8c2048;
+}
+
+button:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px #8c2048;
+}
+
+button:focus-visible { outline: 3px solid #ffe29b; outline-offset: 3px; }
+
+canvas {
+  image-rendering: pixelated;
+  max-width: 100%;
+}
+
+/* SOBRE */
+.sobre {
+  position: relative;
+  width: min(78vw, 280px);
+  height: 190px;
+  margin-top: 70px;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+.sobre:active { transform: none; box-shadow: none; }
+.sobre > div { position: absolute; }
+
+.s-fondo { inset: 0; background: #a92f5c; z-index: 1; }
+
+.s-carta {
+  left: 8%; right: 8%; top: 8px; bottom: 14px;
+  background:
+    repeating-linear-gradient(#fff3ea 0 12px, #f2c9d8 12px 14px);
+  border: 3px solid #fff3ea;
+  z-index: 2;
+  transition: transform 1s ease .6s;
+}
+
+.s-frente {
+  inset: 0;
+  background: #e0507f;
+  clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
+  z-index: 3;
+}
+
+.s-solapa {
+  left: 0; right: 0; top: 0; height: 62%;
+  background: #c8416f;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  z-index: 4;
+  transition: transform .7s ease, z-index 0s .35s;
+}
+
+.sello {
+  left: 50%; top: 42%;
+  transform: translate(-50%, -50%);
+  font-size: 22px;
+  z-index: 5;
+  transition: opacity .3s;
+}
+
+.abierto .s-solapa { transform: rotateX(180deg); z-index: 1; }
+.abierto .s-carta { transform: translateY(-75px); }
+.abierto .sello { opacity: 0; }
+
+.aviso {
+  font-size: 9px;
+  color: #ffd9e6;
+  animation: parpadeo 1.4s steps(2) infinite;
+}
+
+@keyframes parpadeo { 50% { opacity: .25; } }
+
+/* CARTA ABIERTA */
+.papel {
+  width: 100%;
+  background: #fff3ea;
+  color: #4a1d33;
+  border: 4px solid #e83d70;
+  box-shadow: 0 6px #8c2048;
+  padding: 26px 20px;
+  text-align: left;
+  font-size: clamp(9px, 2.8vw, 11px);
+  line-height: 2.4;
+  white-space: pre-line;
+  min-height: 220px;
+  animation: florecer 1s ease both;
+}
+
+#mensaje {
+  font-size: clamp(14px, 5vw, 22px);
+  line-height: 1.8;
+  min-height: 35px;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.visible { opacity: 1 !important; }
+
+#flores {
+  width: min(95vw, 430px);
+  aspect-ratio: 1;
+  image-rendering: pixelated;
+  animation: florecer 1.5s ease both;
+}
+
+#poema {
+  font-size: clamp(8px, 2.5vw, 11px);
+  color: #ffd9e6;
+  line-height: 2.6;
+  white-space: pre-line;
+  opacity: 0;
+  transition: opacity 2s;
+  max-width: 450px;
+}
+
+.secundario {
+  background: transparent;
+  color: #ffadc7;
+  border: 2px solid #774057;
+  box-shadow: none;
+  font-size: 9px;
+}
+
+/* BOTÓN DE MÚSICA */
+#btnMusica {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  padding: 10px 12px;
+  font-size: 14px;
+  background: rgba(13, 9, 16, .7);
+}
+
+@keyframes florecer {
+  from { opacity: 0; transform: scale(.8); filter: brightness(.3); }
+  to { opacity: 1; transform: scale(1); filter: brightness(1); }
+}
+
+@media(prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0s !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="estrellas"></canvas>
+
+<!--
+  ♫ MÚSICA ♫
+  Pon aquí el nombre de tu canción (el archivo debe estar en la misma carpeta
+  que este HTML) o un enlace directo a un .mp3.
+  Ejemplo: src="cancion.mp3"
+-->
+<audio id="musica" src="/home/anhely/Descargas/kiravale-background-music-for-video-593669.mp3" loop preload="auto"></audio>
+
+<button id="btnMusica" class="secundario oculto" onclick="alternarMusica()"
+aria-label="Activar o silenciar la música">🔊</button>
+
+<!-- INICIO: SOBRE -->
+
+<section id="inicio" class="pantalla">
+  <h1>Para el mejor papá ❤️</h1>
+
+  <button id="sobre" class="sobre" onclick="abrirSobre()" aria-label="Abrir la carta">
+    <div class="s-fondo"></div>
+    <div class="s-carta"></div>
+    <div class="s-frente"></div>
+    <div class="s-solapa"></div>
+    <div class="sello">❤️</div>
+  </button>
+
+  <p class="aviso">Toca el sobre</p>
+</section>
+
+<!-- CARTA ABIERTA -->
+
+<section id="carta" class="pantalla oculto">
+  <div id="textoCarta" class="papel"></div>
+  <button id="btnContinuar" class="oculto" onclick="iniciar()">Continuar</button>
+</section>
+
+<!-- CORAZÓN -->
+
+<section id="escena" class="pantalla oculto">
+  <canvas id="corazon"></canvas>
+  <p id="mensaje"></p>
+  <button id="btnRamo" class="secundario oculto"
+  onclick="mostrarRamo()">Ver mi regalo 🌷</button>
+</section>
+
+<!-- RAMO -->
+
+<section id="regalo" class="pantalla oculto">
+
+<svg id="flores" viewBox="0 0 128 128"
+xmlns="http://www.w3.org/2000/svg"
+shape-rendering="crispEdges">
+
+<defs>
+  <linearGradient id="papel" x2="1" y2="1">
+    <stop stop-color="#ffd1e2"/>
+    <stop offset=".5" stop-color="#f18ab2"/>
+    <stop offset="1" stop-color="#bd477b"/>
+  </linearGradient>
+
+  <linearGradient id="hoja" x2="1" y2="1">
+    <stop stop-color="#9acb79"/>
+    <stop offset="1" stop-color="#245536"/>
+  </linearGradient>
+
+  <linearGradient id="rosa" x2="1" y2="1">
+    <stop stop-color="#ffe0e8"/>
+    <stop offset=".45" stop-color="#f58cae"/>
+    <stop offset="1" stop-color="#ad285b"/>
+  </linearGradient>
+
+  <linearGradient id="amarillo" x2="1" y2="1">
+    <stop stop-color="#fff59c"/>
+    <stop offset=".5" stop-color="#ffc32d"/>
+    <stop offset="1" stop-color="#e77913"/>
+  </linearGradient>
+
+  <g id="petalosRosa">
+    <path d="M0 -15 L-7 -13 L-12 -8 L-13 0
+    L-10 9 L-3 14 L5 13 L12 7 L14 -2
+    L9 -11 L3 -14Z"
+    fill="#c83b70" stroke="#321326" stroke-width="1.5"/>
+
+    <path d="M0 -12 L-7 -9 L-9 -3 L-6 5
+    L0 10 L7 7 L10 0 L7 -8Z"
+    fill="url(#rosa)" stroke="#71304c" stroke-width="1"/>
+
+    <path d="M-4 -7 L1 -11 L7 -7 L9 -1
+    L4 5 L-3 7 L-8 1Z"
+    fill="#f8a6c0"/>
+
+    <path d="M-2 -5 L3 -8 L7 -3 L5 3
+    L0 5 L-4 1Z"
+    fill="#ffe0e8" stroke="#c6537b" stroke-width=".8"/>
+
+    <path d="M-4 -9 L-1 -11 L1 -8"
+    fill="none" stroke="#fff2ed" stroke-width="2"/>
+  </g>
+
+  <path id="petalo" d="M0 -9 L-4 -14 L-3 -24 L1 -29 L5 -20 L5 -12Z"/>
+
+  <g id="girasol">
+    <g fill="url(#amarillo)" stroke="#613015" stroke-width="1">
+      <use href="#petalo"/>
+      <use href="#petalo" transform="rotate(30)"/>
+      <use href="#petalo" transform="rotate(60)"/>
+      <use href="#petalo" transform="rotate(90)"/>
+      <use href="#petalo" transform="rotate(120)"/>
+      <use href="#petalo" transform="rotate(150)"/>
+      <use href="#petalo" transform="rotate(180)"/>
+      <use href="#petalo" transform="rotate(210)"/>
+      <use href="#petalo" transform="rotate(240)"/>
+      <use href="#petalo" transform="rotate(270)"/>
+      <use href="#petalo" transform="rotate(300)"/>
+      <use href="#petalo" transform="rotate(330)"/>
+    </g>
+
+    <circle r="12" fill="#69351d" stroke="#30170e" stroke-width="2"/>
+    <circle r="9" fill="#985027"/>
+    <circle r="6" fill="#6b321b"/>
+
+    <g fill="#e4a34a">
+      <rect x="-6" y="-4" width="2" height="2"/>
+      <rect x="2" y="-6" width="2" height="2"/>
+      <rect x="-2" y="3" width="2" height="2"/>
+      <rect x="5" y="3" width="2" height="2"/>
+      <rect x="-5" y="5" width="2" height="2"/>
+      <rect x="0" y="-1" width="2" height="2"/>
+    </g>
+  </g>
+
+  <path id="petaloLila" d="M0 0 L-3 -11 L0 -15 L4 -10 L3 0Z"/>
+
+  <g id="lila">
+    <g fill="#b98be6" stroke="#362248" stroke-width="1">
+      <use href="#petaloLila"/>
+      <use href="#petaloLila" transform="rotate(72)"/>
+      <use href="#petaloLila" transform="rotate(144)"/>
+      <use href="#petaloLila" transform="rotate(216)"/>
+      <use href="#petaloLila" transform="rotate(288)"/>
+    </g>
+    <circle r="3" fill="#ffdc8b"/>
+  </g>
+
+</defs>
+
+<!-- DESTELLOS -->
+
+<g fill="#ffe29b">
+  <path d="M12 17h2v6h-2z M10 19h6v2h-6z"/>
+  <path d="M111 14h2v6h-2z M109 16h6v2h-6z"/>
+  <path d="M17 70h2v6h-2z M15 72h6v2h-6z"/>
+  <path d="M106 77h2v6h-2z M104 79h6v2h-6z"/>
+</g>
+
+<!-- TALLOS -->
+
+<g fill="none" stroke="#315e38" stroke-width="3">
+  <path d="M64 112 Q45 75 27 35"/>
+  <path d="M64 112 Q76 70 96 36"/>
+  <path d="M64 112 Q62 66 64 19"/>
+  <path d="M64 112 Q35 85 15 66"/>
+  <path d="M64 112 Q92 85 115 66"/>
+</g>
+
+<!-- HOJAS -->
+
+<g stroke="#172d20" stroke-width="1.3">
+  <path d="M49 83 Q23 80 18 59 Q39 58 49 83Z" fill="url(#hoja)"/>
+  <path d="M51 89 Q24 92 24 108 Q45 106 51 89Z" fill="#397747"/>
+  <path d="M76 82 Q100 63 111 72 Q100 94 76 82Z" fill="url(#hoja)"/>
+  <path d="M78 92 Q104 88 108 106 Q88 109 78 92Z" fill="#397747"/>
+  <path d="M59 95 Q39 72 43 61 Q62 70 59 95Z" fill="#4c8c4c"/>
+  <path d="M69 90 Q85 65 94 63 Q91 84 69 90Z" fill="#6ba15b"/>
+  <path d="M62 109 Q47 94 44 91 Q60 91 62 109Z" fill="#397747"/>
+</g>
+
+<!-- GIRASOLES -->
+
+<use href="#girasol" transform="translate(32 35) scale(.92)"/>
+<use href="#girasol" transform="translate(95 45) scale(.83)"/>
+<use href="#girasol" transform="translate(64 69) scale(.68)"/>
+
+<!-- ROSAS -->
+
+<use href="#petalosRosa" transform="translate(64 19) scale(.85)"/>
+<use href="#petalosRosa" transform="translate(20 61) scale(.77)"/>
+<use href="#petalosRosa" transform="translate(109 69) scale(.72)"/>
+<use href="#petalosRosa" transform="translate(49 52) scale(.75)"/>
+<use href="#petalosRosa" transform="translate(83 88) scale(.65)"/>
+
+<!-- FLORES LILAS -->
+
+<use href="#lila" transform="translate(13 39) scale(.8)"/>
+<use href="#lila" transform="translate(112 35) scale(.8)"/>
+<use href="#lila" transform="translate(22 83) scale(.65)"/>
+<use href="#lila" transform="translate(105 91) scale(.7)"/>
+<use href="#lila" transform="translate(47 13) scale(.65)"/>
+
+<!-- ENVOLTORIO -->
+
+<path d="M22 87 L106 87 L94 124 L64 127 L34 123Z"
+fill="url(#papel)" stroke="#351629" stroke-width="2"/>
+
+<path d="M22 87 L44 94 L55 124 L34 123Z"
+fill="#f8b6ce" stroke="#71334f" stroke-width="1.5"/>
+
+<path d="M106 87 L84 94 L73 124 L94 124Z"
+fill="#c65b8b" stroke="#71334f" stroke-width="1.5"/>
+
+<path d="M42 94 L85 94 L76 124 L52 124Z"
+fill="#f7c2d5" stroke="#71334f" stroke-width="1"/>
+
+<!-- PLIEGUES -->
+
+<g fill="none" stroke="#a64c76" stroke-width="1.5">
+  <path d="M42 96 L49 120"/>
+  <path d="M86 96 L78 120"/>
+  <path d="M58 107 L62 124"/>
+</g>
+
+<!-- MOÑO -->
+
+<path d="M62 96 Q44 83 40 94 L46 105 L62 103Z"
+fill="#d83e7c" stroke="#51152f" stroke-width="2"/>
+
+<path d="M66 96 Q84 83 89 94 L82 105 L66 103Z"
+fill="#ef6d9e" stroke="#51152f" stroke-width="2"/>
+
+<path d="M61 99 L54 115 L44 119 L49 104Z"
+fill="#b82c65" stroke="#51152f" stroke-width="1.5"/>
+
+<path d="M67 99 L74 115 L84 119 L79 104Z"
+fill="#d84980" stroke="#51152f" stroke-width="1.5"/>
+
+<path d="M59 95 L69 95 L71 104 L64 109 L57 104Z"
+fill="#ff9cbd" stroke="#51152f" stroke-width="2"/>
+
+<path d="M60 98 L65 98 L66 102 L62 104Z"
+fill="#ffe2ed"/>
+
+</svg>
+
+<p id="poema"></p>
+
+<button class="secundario" onclick="reiniciar()">
+Volver a ver ❤️
+</button>
+
+</section>
+
+
+<script>
+
+/* PERSONALIZACIÓN */
+
+const CARTA = `Papá:
+
+Hice algo especial para ti.
+
+Ábrelo con calma,
+porque está hecho con todo mi cariño. Atentamente: Anhely.`;
+
+const MENSAJE = "tqm papá";
+
+const POEMA = `Hay personas que son como el sol,
+incluso en los días nublados,
+siempre encuentran la manera de darnos luz.
+
+Gracias por cada esfuerzo silencioso,
+por cada sacrificio y cada enseñanza,
+por cuidar de nosotros incluso
+cuando el camino no ha sido fácil.
+
+Quizá no siempre encuentre las palabras
+para expresar cuánto te admiro,
+pero quiero que sepas algo:
+
+Si la vida me regalara mil caminos,
+en todos quisiera tenerte como mi papá.
+
+Te quiero muchísimo. ❤️`;
+
+
+/* ELEMENTOS */
+
+const inicio = document.getElementById("inicio");
+const sobre = document.getElementById("sobre");
+const carta = document.getElementById("carta");
+const textoCarta = document.getElementById("textoCarta");
+const btnContinuar = document.getElementById("btnContinuar");
+const escena = document.getElementById("escena");
+const regalo = document.getElementById("regalo");
+const canvas = document.getElementById("corazon");
+const ctx = canvas.getContext("2d");
+const mensaje = document.getElementById("mensaje");
+const btnRamo = document.getElementById("btnRamo");
+const poema = document.getElementById("poema");
+const musica = document.getElementById("musica");
+const btnMusica = document.getElementById("btnMusica");
+
+const reducido = matchMedia(
+  "(prefers-reduced-motion: reduce)"
+).matches;
+
+
+/* ESTRELLAS */
+
+const cv = document.getElementById("estrellas");
+const c2 = cv.getContext("2d");
+let estrellas = [];
+
+function crearEstrellas() {
+  cv.width = innerWidth;
+  cv.height = innerHeight;
+
+  const n = Math.floor(innerWidth * innerHeight / 6000);
+
+  estrellas = Array.from({length: n}, () => ({
+    x: Math.random() * cv.width,
+    y: Math.random() * cv.height,
+    t: Math.random() < .15 ? 3 : 2,
+    f: Math.random() * 6.28,
+    v: .5 + Math.random() * 1.5,
+    c: Math.random() < .2 ? "#ffd9e6" : "#fff"
+  }));
+}
+
+function pintarEstrellas(ms) {
+  c2.clearRect(0, 0, cv.width, cv.height);
+
+  estrellas.forEach(e => {
+    c2.globalAlpha = reducido
+      ? .8
+      : .35 + .65 * Math.abs(Math.sin(ms / 1000 * e.v + e.f));
+    c2.fillStyle = e.c;
+    c2.fillRect(Math.round(e.x), Math.round(e.y), e.t, e.t);
+  });
+
+  c2.globalAlpha = 1;
+
+  if(!reducido) requestAnimationFrame(pintarEstrellas);
+}
+
+crearEstrellas();
+pintarEstrellas(0);
+
+if(!reducido) requestAnimationFrame(pintarEstrellas);
+
+
+/* MÚSICA */
+
+function alternarMusica() {
+  if(musica.paused) {
+    musica.play().catch(()=>{});
+    btnMusica.textContent = "🔊";
+  } else {
+    musica.pause();
+    btnMusica.textContent = "🔇";
+  }
+}
+
+function iniciarMusica() {
+  btnMusica.classList.remove("oculto");
+  musica.volume = .6;
+  musica.play().then(()=>{
+    btnMusica.textContent = "🔊";
+  }).catch(()=>{
+    btnMusica.textContent = "🔇";
+  });
+}
+
+
+/* CORAZÓN */
+
+const COLS = 33;
+const ROWS = 30;
+
+let pixeles = [];
+let lado = 0;
+let raf;
+let reloj;
+
+function prepararCorazon() {
+
+  pixeles = [];
+
+  for(let r=0; r<ROWS; r++) {
+    for(let c=0; c<COLS; c++) {
+
+      const x = c/(COLS-1)*2.7-1.35;
+      const y = 1.4-r/(ROWS-1)*2.65;
+
+      const dentro =
+        Math.pow(x*x+y*y-1,3) -
+        x*x*Math.pow(y,3) <= 0;
+
+      if(!dentro) continue;
+
+      const t = r/(ROWS-1);
+
+      const colores = [
+        Math.round(255+(224-255)*t),
+        Math.round(107+(25-107)*t),
+        Math.round(154+(79-154)*t)
+      ];
+
+      const brillo =
+        x<-.25 && y>.45 && Math.random()<.5 ? 30 : 0;
+
+      colores[0] = Math.min(255,colores[0]+brillo);
+
+      pixeles.push({
+        c,r,
+        color:`rgb(${colores.join(",")})`,
+        orden:(1-t)+Math.random()*.45
+      });
+    }
+  }
+
+  const max = Math.max(...pixeles.map(p=>p.orden));
+
+  pixeles.forEach(p=>{
+    p.inicio=p.orden/max*.85;
+  });
+}
+
+function ajustarCanvas() {
+
+  const ancho = Math.min(
+    window.innerWidth*.85,
+    420
+  );
+
+  lado = Math.max(1,Math.floor(ancho/COLS));
+
+  const d = window.devicePixelRatio || 1;
+
+  canvas.width = COLS*lado*d;
+  canvas.height = ROWS*lado*d;
+
+  canvas.style.width = COLS*lado+"px";
+  canvas.style.height = ROWS*lado+"px";
+
+  ctx.setTransform(d,0,0,d,0,0);
+}
+
+function dibujarCorazon(progreso,latido) {
+
+  const w = COLS*lado;
+  const h = ROWS*lado;
+
+  ctx.clearRect(0,0,w,h);
+
+  ctx.save();
+
+  ctx.translate(w/2,h/2);
+  ctx.scale(latido,latido);
+  ctx.translate(-w/2,-h/2);
+
+  pixeles.forEach(p=>{
+
+    const avance=(progreso-p.inicio)/.15;
+
+    if(avance<=0) return;
+
+    const escala=avance>=1
+      ? 1
+      : 1-Math.pow(1-avance,3);
+
+    const tam=lado*escala;
+    const off=(lado-tam)/2;
+
+    ctx.fillStyle=p.color;
+
+    ctx.fillRect(
+      p.c*lado+off,
+      p.r*lado+off,
+      Math.max(0,tam-1),
+      Math.max(0,tam-1)
+    );
+
+  });
+
+  ctx.restore();
+}
+
+
+/* ANIMACIÓN */
+
+function escribir(elemento,texto,velocidad,callback) {
+
+  clearInterval(reloj);
+
+  elemento.textContent="";
+  elemento.classList.add("visible");
+
+  let i=0;
+
+  reloj=setInterval(()=>{
+
+    elemento.textContent=texto.slice(0,++i);
+
+    if(i>=texto.length) {
+      clearInterval(reloj);
+      if(callback) callback();
+    }
+
+  },reducido?0:velocidad);
+}
+
+function reproducir() {
+
+  cancelAnimationFrame(raf);
+  clearInterval(reloj);
+
+  mensaje.classList.remove("visible");
+  btnRamo.classList.add("oculto");
+
+  prepararCorazon();
+  ajustarCanvas();
+
+  const inicioTiempo=performance.now();
+  const duracion=reducido?1:5000;
+
+  function animar(ahora) {
+
+    const t=ahora-inicioTiempo;
+    const progreso=Math.min(t/duracion,1.2);
+
+    const despues=Math.max(0,t-duracion);
+
+    const latido=reducido?1:
+      1+.035*Math.max(0,Math.sin(despues/260));
+
+    dibujarCorazon(progreso,latido);
+
+    if(progreso>=1) {
+
+      if(!mensaje.classList.contains("visible")) {
+
+        escribir(mensaje,MENSAJE,160,()=>{
+          btnRamo.classList.remove("oculto");
+        });
+
+      }
+
+    }
+
+    raf=requestAnimationFrame(animar);
+  }
+
+  raf=requestAnimationFrame(animar);
+}
+
+
+/* NAVEGACIÓN */
+
+function abrirSobre() {
+
+  if(sobre.classList.contains("abierto")) return;
+
+  iniciarMusica();
+  sobre.classList.add("abierto");
+
+  setTimeout(()=>{
+
+    inicio.classList.add("oculto");
+    carta.classList.remove("oculto");
+
+    escribir(textoCarta,CARTA,55,()=>{
+      btnContinuar.classList.remove("oculto");
+    });
+
+  },reducido?100:2100);
+}
+
+function iniciar() {
+
+  clearInterval(reloj);
+
+  carta.classList.add("oculto");
+  escena.classList.remove("oculto");
+
+  reproducir();
+}
+
+function mostrarRamo() {
+
+  cancelAnimationFrame(raf);
+  clearInterval(reloj);
+
+  escena.classList.add("oculto");
+  regalo.classList.remove("oculto");
+
+  poema.classList.remove("visible");
+
+  escribir(poema,POEMA,65);
+}
+
+function reiniciar() {
+
+  clearInterval(reloj);
+  cancelAnimationFrame(raf);
+
+  regalo.classList.add("oculto");
+  escena.classList.remove("oculto");
+
+  reproducir();
+}
+
+window.addEventListener("resize",()=>{
+
+  crearEstrellas();
+  if(reducido) pintarEstrellas(0);
+
+  if(!escena.classList.contains("oculto")) {
+    ajustarCanvas();
+  }
+
+});
+
+</script>
+
+</body>
+</html>
